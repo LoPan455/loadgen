@@ -5,6 +5,7 @@ pip install -r requirements.txt
 ### Debian/ubuntu
 #### Install Python
 ```bash
+sudo apt-update
 sudo apt install python3
 nano ~/.bash_profile
 alias python='usr/bin/python3.8'
@@ -13,7 +14,8 @@ python --version
 ```
 #### Install Pip
 ```bash
-sudo apt install python3-pip
+sudo apt-update && \
+sudo apt install python3-pip -y
 ```
 `alias pip=pip3`
 #### Install `pyenv`
