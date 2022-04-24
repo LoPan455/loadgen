@@ -1,3 +1,4 @@
+import array
 import time
 from locust import HttpUser, task, between, run_single_user, constant_pacing
 from urllib.parse import urlparse
@@ -44,7 +45,28 @@ class SpringPetClinicUser(HttpUser):
     @task
     def add_new_owner_and_pet(self):
         owner_path = self.add_owner()
-        self.add_pet(owner_path)
+        pet_response = self.add_pet(owner_path)
+
+    @task
+    def add_visit(self):
+        owner_id = random.randrange(1, 10)
+        # There isn't a way to get all pets for an owner via the api, so we have to build this
+        # relationship list from the SQL script that's run at Startup to ensure we don't create a visit for a pet with
+        # an incorrect owner
+        pet_owner_map = [
+            [1, 1], [2, 2], [3, 3], [4, 3], [5, 4], [6, 5], [7, 6], [8, 6], [9, 7], [10, 8], [11, 9], [12, 10], [13, 10]
+        ]
+        # Pick a random pair of valid owner-pet relationship
+        owner_pet_relationship = pet_owner_map[random.randrange(0, pet_owner_map.__len__() - 1)]
+        # Pets IDs are the first element in each tuple
+        pet_id = owner_pet_relationship[0]
+        # Owner IDs are the second element in each tuple
+        owner_id = owner_pet_relationship[1]
+        with self.client.post(
+            f"/owners/{owner_id}/pets/{pet_id}/visits/new/",
+            data={"date": "2022-04-24", "description": "Making sure my pet is healthy", "petId": pet_id}
+        ) as visitResponse:
+            return visitResponse
 
     def add_owner(self):
         first_name = names.get_first_name()
