@@ -18,14 +18,16 @@ sudo apt-update && \
 sudo apt install python3-pip -y
 ```
 `alias pip=pip3`
-#### Install `venv`
+#### (Optional) Install `venv`
+```bash
+apt install python3.8-venv
+```
+#### Install Locust dependencies
 ```bash
 sudo apt-get update; sudo apt-get install make build-essential libssl-dev zlib1g-dev \
 libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
 libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
-```
-```bash
-pip3 
+``` 
 #### Create Virtual Environment (`venv`)
 Further details on `venv` [here](https://docs.python.org/3/library/venv.html)
 ```bash
